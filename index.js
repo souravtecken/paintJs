@@ -1,5 +1,5 @@
 const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d', {alpha: false});
 
 function compareColors(color1, color2){
     // compares 2 getImageData().data objects;
@@ -9,63 +9,67 @@ function compareColors(color1, color2){
     )
 }
 
+function hexToRGB(hex){
+    hex = hex.charAt(0) == "#" ? hex.substring(1,7) : hex;
+    let R = parseInt(hex.substring(0,2), 16);
+    let G = parseInt(hex.substring(2,4), 16);
+    let B = parseInt(hex.substring(4,6), 16);
+    return [R, G, B, 255];    
+}
+
 function initCanvas(ctx){
-    const canvas = document.getElementById("myCanvas");
-    // ctx.fillStyle = '#FF0000';
-    // ctx.fillRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);    
+    const prevFillStyle = ctx.fillStyle;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+    ctx.fillStyle = prevFillStyle;
 }
 
-function drawRectangle(ctx, x, y, width, height){
-    ctx.strokeRect(x, y, width, height);
-}
-
-function paintBucket(ctx, x, y){
-    // TODO: Don't paint if origin color's same as brush color
-    // TODO: Take in color from canvas fill color
+function paintBucket(ctx, x, y, color){
     const canvasHeight = ctx.canvas.clientHeight;
     const canvasWidth = ctx.canvas.clientWidth;
     const pixelColorGrid = ctx.getImageData(0, 0, canvasHeight, canvasWidth);
-    const color = [0, 0, 0, 255];
-    const originPixelColor = [0, 0, 0, 0];
 
-    const compareColors = (index) => {        
+    let index = (y * canvasWidth + x) * 4;
+    const originPixelColor = [pixelColorGrid.data[index], pixelColorGrid.data[index + 1],
+                              pixelColorGrid.data[index + 2], pixelColorGrid.data[index + 3]];
+
+    if(compareColors(color, originPixelColor))
+        return;
+
+    const compareColorWithOrigin = (index) => {
         return (
             pixelColorGrid.data[index] === originPixelColor[0] &&
             pixelColorGrid.data[index + 1] === originPixelColor[1] &&
             pixelColorGrid.data[index + 2] === originPixelColor[2] &&
-            pixelColorGrid.data[index + 3] === originPixelColor[3] 
+            pixelColorGrid.data[index + 3] === originPixelColor[3]
         );
     }
-
-    const fillColor = (index) => {
-        pixelColorGrid.data[index] = color[0];
-        pixelColorGrid.data[index + 1] = color[1];
-        pixelColorGrid.data[index + 2] = color[2];
-        pixelColorGrid.data[index + 3] = color[3];
-    }
-
+            
     const pixelStack = new Array([x, y]);
     while(pixelStack.length) {
         let coord = pixelStack.pop();
         x = coord[0];
         y = coord[1];
 
-        let index = (y * canvasWidth + x) * 4;
-        if(x-1 >= 0 && compareColors(index))
+        index = (y * canvasWidth + x) * 4;
+        if(x-1 >= 0 && compareColorWithOrigin(index - 4))
             pixelStack.push([x-1, y]);
-        if(x+1 < canvasWidth && compareColors(index))
+        if(x+1 < canvasWidth && compareColorWithOrigin(index + 4))
             pixelStack.push([x+1, y]);
-        if(y-1 >= 0 && compareColors(x, y))
+        if(y-1 >= 0 && compareColorWithOrigin(index - canvasWidth * 4))
             pixelStack.push([x, y-1]);
-        if(y+1 < canvasHeight && compareColors(index))
+        if(y+1 < canvasHeight && compareColorWithOrigin(index + canvasWidth * 4))
             pixelStack.push([x, y+1]);
-        fillColor(index);
+        // Fill color
+        pixelColorGrid.data[index] = color[0];
+        pixelColorGrid.data[index + 1] = color[1];
+        pixelColorGrid.data[index + 2] = color[2];
+        pixelColorGrid.data[index + 3] = color[3];    
     }
-
     ctx.putImageData(pixelColorGrid, 0, 0);
 }
 
-const drawPoint = (ctx, x, y) => {
+function drawPoint(ctx, x, y) {
     ctx.lineTo(x, y);
     ctx.stroke();
 }
@@ -80,7 +84,8 @@ canvas.addEventListener("click", (event) => {
 })
 
 canvas.addEventListener("contextmenu", (event) => {
-    paintBucket(ctx, event.clientX, event.clientY);
+    const color = ctx.fillStyle;    
+    paintBucket(ctx, event.clientX, event.clientY, hexToRGB(color));
 })
 
 canvas.addEventListener("mousedown", (event) => {
