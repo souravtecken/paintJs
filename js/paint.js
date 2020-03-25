@@ -1,6 +1,3 @@
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext('2d', {alpha: false});
-
 function compareColors(color1, color2){
     // compares 2 getImageData().data objects;
     return (
@@ -24,10 +21,16 @@ function initCanvas(ctx){
     ctx.fillStyle = prevFillStyle;
 }
 
+function resizeCanvas(canvas, ctx, width, height){
+    canvas.width = width;
+    canvas.height = height;
+    initCanvas(ctx);
+}
+
 function paintBucket(ctx, x, y, color){
     const canvasHeight = ctx.canvas.clientHeight;
     const canvasWidth = ctx.canvas.clientWidth;
-    const pixelColorGrid = ctx.getImageData(0, 0, canvasHeight, canvasWidth);
+    const pixelColorGrid = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
     let index = (y * canvasWidth + x) * 4;
     const originPixelColor = [pixelColorGrid.data[index], pixelColorGrid.data[index + 1],
@@ -73,24 +76,3 @@ function drawPoint(ctx, x, y) {
     ctx.lineTo(x, y);
     ctx.stroke();
 }
-
-canvas.addEventListener("mousemove", (event) => {    
-    if(event.buttons == 1)
-        drawPoint(ctx, event.clientX, event.clientY, 1);
-})
-
-canvas.addEventListener("click", (event) => {
-    drawPoint(ctx, event.clientX, event.clientY, 1);
-})
-
-canvas.addEventListener("contextmenu", (event) => {
-    const color = ctx.fillStyle;    
-    paintBucket(ctx, event.clientX, event.clientY, hexToRGB(color));
-})
-
-canvas.addEventListener("mousedown", (event) => {
-    ctx.moveTo(event.clientX, event.clientY);
-})
-
-
-initCanvas(ctx);
