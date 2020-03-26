@@ -17,11 +17,18 @@
                 <i class="pencil icon"></i>
             </button>
         </div>
-        <div id="brushTool" class="toolButtonBox">
+
+        <div id="brushTool" class="ui left pointing dropdown link toolButtonBox">
+            <div class="menu">
+                <div id="strokePalette" class="item">
+                    <input id="strokePicker" type="range"></input>
+                </div>
+            </div>
             <button class="toolButton">
                 <i class="paint brush icon"></i>
             </button>
         </div>
+
         <div id="colorPaletteTool" class="ui left pointing dropdown link toolButtonBox">
             <div class="menu">
                 <div id="colorPalette" class="item">
@@ -54,7 +61,7 @@
                             <tr>
                                 <td class="colorOption"><div class="ui black empty circular big label"></div></td>
                                 <td class="colorOption"><div class="ui rainbow empty circular big label"><input id="colorPicker" type="color"/></div></td>
-                            </tr>                            
+                            </tr>
                         </tbody>
                     </table>
                 </div>                
@@ -69,6 +76,7 @@
                 <i class="eraser icon"></i>
             </button>
         </div>
+        
         <div id="clearTool" class="toolButtonBox">
             <button class="toolButton">
                 <i class="trash icon"></i>

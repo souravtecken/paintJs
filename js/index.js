@@ -1,18 +1,19 @@
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext('2d', {alpha: false});
+const Paint = new PaintJs(ctx, canvas);
 
 canvas.addEventListener("mousemove", (event) => {
     if(event.buttons == 1)
-        drawPath(ctx, event.offsetX, event.offsetY);
+        Paint.drawPath(event.offsetX, event.offsetY);
 })
 
 canvas.addEventListener("click", (event) => {
-    drawPath(ctx, event.offsetX, event.offsetY);
+    Paint.drawPath(event.offsetX, event.offsetY);
 })
 
 canvas.addEventListener("contextmenu", (event) => {
     const color = ctx.fillStyle;
-    paintBucket(ctx, event.offsetX, event.offsetY, hexToRGB(color));
+    Paint.paintBucket(event.offsetX, event.offsetY, hexToRGB(color));
 })
 
 canvas.addEventListener("mousedown", (event) => {
@@ -42,21 +43,26 @@ $('.colorOption').click((event) => {
         color = window.getComputedStyle(event.target, null).getPropertyValue('background-color');
     else
         color = window.getComputedStyle(event.target.querySelector('div'), null).getPropertyValue('background-color');
-    setStrokeColor(ctx, color);
-    setFillColor(ctx, color);
+    Paint.setStrokeColor(color);
+    Paint.setFillColor(color);
     $('#colorPaletteTool button').css('color', color);
 });
 
 $('#colorPicker').on('input', ((event) => {
     const color = event.target.value;
-    setStrokeColor(ctx, color);
-    setFillColor(ctx, color);
+    Paint.setStrokeColor(color);
+    Paint.setFillColor(color);
     $('#colorPaletteTool button').css('color', color);
 }))
 
-$('#clearTool').click((event) => {
-    initCanvas(ctx);
+$('#strokePicker').on('input', (event) => {
+    const width = event.target.value;
+    Paint.setStrokeWidth(width);
 })
 
-initCanvas(ctx);
+$('#clearTool').click(() => {
+    Paint.initCanvas();
+})
+
+Paint.initCanvas();
 initToolBox();
