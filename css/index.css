@@ -55,3 +55,13 @@ canvas {
 #colorPalette {
     padding: 0 !important;
 }
+
+.colorOption .rainbow {
+    background-image: linear-gradient( red,orange,yellow,green,blue,indigo,violet);    
+}
+
+#colorPicker {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}

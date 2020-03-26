@@ -12,17 +12,17 @@
 
 <body>    
     <div id="toolBarContainer" class="ui mini left fixed vertical menu">
-        <div class="toolButtonBox">
+        <div id="pencilTool" class="toolButtonBox">
             <button class="toolButton">
                 <i class="pencil icon"></i>
             </button>
         </div>
-        <div class="toolButtonBox">
+        <div id="brushTool" class="toolButtonBox">
             <button class="toolButton">
                 <i class="paint brush icon"></i>
             </button>
         </div>
-        <div class="ui left pointing dropdown link toolButtonBox">
+        <div id="colorPaletteTool" class="ui left pointing dropdown link toolButtonBox">
             <div class="menu">
                 <div id="colorPalette" class="item">
                     <table class="ui very basic collapsing celled table">                                                                                                                                                                                                                                                                                                                                         
@@ -53,6 +53,7 @@
                             </tr>
                             <tr>
                                 <td class="colorOption"><div class="ui black empty circular big label"></div></td>
+                                <td class="colorOption"><div class="ui rainbow empty circular big label"><input id="colorPicker" type="color"/></div></td>
                             </tr>                            
                         </tbody>
                     </table>
@@ -63,12 +64,12 @@
             </button>
         </div>
         
-        <div class="toolButtonBox">
+        <div id="eraserTool" class="toolButtonBox">
             <button class="toolButton">
                 <i class="eraser icon"></i>
             </button>
         </div>
-        <div class="toolButtonBox">
+        <div id="clearTool" class="toolButtonBox">
             <button class="toolButton">
                 <i class="trash icon"></i>
             </button>
