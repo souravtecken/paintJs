@@ -19,9 +19,13 @@ canvas.addEventListener("mousedown", (event) => {
     ctx.moveTo(event.offsetX, event.offsetY);
 })
 
-initCanvas(ctx);
+function initToolBox(){
+    const toolButtonWidth = $('.toolButtonBox').width();
+    $('.toolButtonBox').css({'height':`${toolButtonWidth}px`});
 
-$('.visible.example .ui.sidebar')
-    .sidebar({
-        context: '.visible.example .bottom.segment'
-    }).sidebar('hide');
+    $('.ui.dropdown')
+        .dropdown();
+}
+
+initCanvas(ctx);
+initToolBox();

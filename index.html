@@ -10,17 +10,43 @@
     <script type="text/javascript" src="./js/paint.js"></script>
 </head>    
 
-<body>        
-    <div id="mainContainer" class="ui bottom attached segment pushable">
-        <div class="ui visible inverted left vertical sidebar menu">
-            
+<body>    
+    <div id="toolBarContainer" class="ui mini left fixed vertical menu">
+        <div class="toolButtonBox">
+            <button class="toolButton">
+                <i class="pencil icon"></i>
+            </button>
         </div>
-        <div id="canvasContainer" class="pusher">            
-            <canvas id="myCanvas" height="600px" width="800px" oncontextmenu="return false;">
-                Hello, World!
-            </canvas>            
+        <div class="toolButtonBox">
+            <button class="toolButton">
+                <i class="paint brush icon"></i>
+            </button>
         </div>
-    </div>
+        <div class="ui left pointing dropdown link toolButtonBox">
+            <div class="menu">
+                <div class="item">To be color palette</div>
+            </div>
+            <button class="toolButton">
+                <i class="tint icon"></i>
+            </button>
+        </div>
+        
+        <div class="toolButtonBox">
+            <button class="toolButton">
+                <i class="eraser icon"></i>
+            </button>
+        </div>
+        <div class="toolButtonBox">
+            <button class="toolButton">
+                <i class="trash icon"></i>
+            </button>
+        </div>
+    </div>    
+    
+    <canvas id="myCanvas" height="600px" width="800px" oncontextmenu="return false;">
+        Hello, World!
+    </canvas>            
+    
     <script type="text/javascript" src="./js/index.js"></script>
 </body>
 
