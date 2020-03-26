@@ -27,6 +27,14 @@ function resizeCanvas(canvas, ctx, width, height){
     initCanvas(ctx);
 }
 
+function setStrokeColor(ctx, color){
+    ctx.strokeStyle = color;
+}
+
+function setFillColor(ctx, color){
+    ctx.fillStyle = color;
+}
+
 function paintBucket(ctx, x, y, color){
     const canvasHeight = ctx.canvas.clientHeight;
     const canvasWidth = ctx.canvas.clientWidth;
@@ -72,7 +80,7 @@ function paintBucket(ctx, x, y, color){
     ctx.putImageData(pixelColorGrid, 0, 0);
 }
 
-function drawPoint(ctx, x, y) {
+function drawPath(ctx, x, y) {
     ctx.lineTo(x, y);
     ctx.stroke();
 }

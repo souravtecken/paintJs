@@ -3,11 +3,11 @@ const ctx = canvas.getContext('2d', {alpha: false});
 
 canvas.addEventListener("mousemove", (event) => {
     if(event.buttons == 1)
-        drawPoint(ctx, event.offsetX, event.offsetY, 1);
+        drawPath(ctx, event.offsetX, event.offsetY);
 })
 
 canvas.addEventListener("click", (event) => {
-    drawPoint(ctx, event.offsetX, event.offsetY, 1);
+    drawPath(ctx, event.offsetX, event.offsetY);
 })
 
 canvas.addEventListener("contextmenu", (event) => {
@@ -16,6 +16,8 @@ canvas.addEventListener("contextmenu", (event) => {
 })
 
 canvas.addEventListener("mousedown", (event) => {
+    ctx.closePath();
+    ctx.beginPath();
     ctx.moveTo(event.offsetX, event.offsetY);
 })
 
@@ -26,6 +28,17 @@ function initToolBox(){
     $('.ui.dropdown')
         .dropdown();
 }
+
+$(".colorOption").click((event) => {
+    const child = event.target.querySelector('div');
+    let color;
+    if(child === null)
+        color = window.getComputedStyle(event.target, null).getPropertyValue("background-color");
+    else
+        color = window.getComputedStyle(event.target.querySelector('div'), null).getPropertyValue("background-color");
+    setStrokeColor(ctx, color);
+    setFillColor(ctx, color);
+});
 
 initCanvas(ctx);
 initToolBox();
