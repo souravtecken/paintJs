@@ -2,6 +2,7 @@ class PaintJs {
     constructor(ctx, canvas){
         this.ctx = ctx;
         this.canvas = canvas;
+        this.strokeWidth = 1;
     }
     initCanvas(){
         const prevFillStyle = ctx.fillStyle;
@@ -25,7 +26,16 @@ class PaintJs {
     }
 
     setStrokeWidth(width){
+        this.strokeWidth = width;
         this.ctx.lineWidth = width;
+    }
+
+    startPath(){
+        this.ctx.beginPath();
+    }
+
+    endPath(){
+        this.ctx.closePath();
     }
 
     paintBucket(x, y, color){
@@ -68,14 +78,26 @@ class PaintJs {
             pixelColorGrid.data[index] = color[0];
             pixelColorGrid.data[index + 1] = color[1];
             pixelColorGrid.data[index + 2] = color[2];
-            pixelColorGrid.data[index + 3] = color[3];    
+            pixelColorGrid.data[index + 3] = color[3];
         }
         this.ctx.putImageData(pixelColorGrid, 0, 0);
+    }
+
+    drawPoint(x, y) {
+        this.ctx.lineWidth = 1;
+        this.ctx.arc(x, y, parseInt(this.strokeWidth/2), 0, 2 * Math.PI * parseInt(this.strokeWidth/2));
+        this.ctx.lineWidth = this.strokeWidth;
+        this.ctx.fill();
     }
     
     drawPath(x, y) {
         this.ctx.lineTo(x, y);
         this.ctx.stroke();
+        this.ctx.beginPath();
+        this.drawPoint(x, y);
+        this.ctx.fill();
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
     }
 }
 

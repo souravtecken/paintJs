@@ -7,19 +7,17 @@ canvas.addEventListener("mousemove", (event) => {
         Paint.drawPath(event.offsetX, event.offsetY);
 })
 
-canvas.addEventListener("click", (event) => {
-    Paint.drawPath(event.offsetX, event.offsetY);
-})
-
 canvas.addEventListener("contextmenu", (event) => {
     const color = ctx.fillStyle;
     Paint.paintBucket(event.offsetX, event.offsetY, hexToRGB(color));
 })
 
 canvas.addEventListener("mousedown", (event) => {
-    ctx.closePath();
-    ctx.beginPath();
-    ctx.moveTo(event.offsetX, event.offsetY);
+    Paint.drawPath(event.offsetX, event.offsetY);
+})
+
+canvas.addEventListener("mouseup", () => {
+    Paint.startPath();
 })
 
 function initToolBox(){
