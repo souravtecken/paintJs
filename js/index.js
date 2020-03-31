@@ -13,11 +13,15 @@ canvas.addEventListener("contextmenu", (event) => {
 })
 
 canvas.addEventListener("mousedown", (event) => {
-    Paint.drawPath(event.offsetX, event.offsetY);
+    if(event.buttons == 1){
+        Paint.movePoint(event.offsetX, event.offsetY);
+        Paint.drawPath(event.offsetX, event.offsetY);    
+    }        
 })
 
-canvas.addEventListener("mouseup", () => {
+canvas.addEventListener("mouseup", (event) => {
     Paint.startPath();
+    Paint.movePoint(event.offsetX, event.offsetY);
 })
 
 function initToolBox(){

@@ -38,6 +38,11 @@ class PaintJs {
         this.ctx.closePath();
     }
 
+    movePoint(x, y){
+        this.x = x;
+        this.y = y;
+    }
+
     paintBucket(x, y, color){
         const canvasHeight = this.canvas.clientHeight;
         const canvasWidth = this.canvas.clientWidth;
@@ -90,14 +95,25 @@ class PaintJs {
         this.ctx.fill();
     }
     
+    drawLineNoAliasing(sx, sy, tx, ty) {
+        const dist = DBP(sx,sy,tx,ty);
+        const ang = getAngle(tx-sx,ty-sy);
+        for(let i=0;i < dist; ++i) {
+            this.ctx.fillRect(Math.round(sx + Math.cos(ang)*i - this.ctx.lineWidth/2),
+                         Math.round(sy + Math.sin(ang)*i - this.ctx.lineWidth/2),
+                         this.ctx.lineWidth,this.ctx.lineWidth);
+        }
+    }
+
     drawPath(x, y) {
-        this.ctx.lineTo(x, y);
+        this.drawLineNoAliasing(this.x, this.y, x, y);
         this.ctx.stroke();
         this.ctx.beginPath();
         this.drawPoint(x, y);
         this.ctx.fill();
         this.ctx.beginPath();
         this.ctx.moveTo(x, y);
+        this.movePoint(x, y);
     }
 }
 
@@ -115,4 +131,12 @@ function hexToRGB(hex){
     let G = parseInt(hex.substring(2,4), 16);
     let B = parseInt(hex.substring(4,6), 16);
     return [R, G, B, 255];    
+}
+
+function DBP(x1,y1,x2,y2) {
+    return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+// finds the angle of (x,y) on a plane from the origin
+function getAngle(x, y) { 
+    return Math.atan(y/(x==0?0.01:x))+(x<0?Math.PI:0); 
 }
